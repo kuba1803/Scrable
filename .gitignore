@@ -213,3 +213,7 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+/Naszprojekt/target/
+/scr/nbproject/private/
+/JavaFXApplication1/nbproject/private/
+/JavaFXApplication2/nbproject/private/
