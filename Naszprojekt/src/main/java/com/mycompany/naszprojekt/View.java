@@ -10,12 +10,11 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
@@ -30,9 +29,22 @@ public class View extends Application {
     private static Piece buf;
     private static Controler contr= new Controler();
 
+    public static Shape CreateBackground(int x,int y,double vectx,double vecty, Paint value)
+    {
+        Rectangle background = new Rectangle();
+        background.setX(x);
+        background.setY(y);
+        background.setWidth(vectx);
+        background.setHeight(vecty);
+        Shape shape=background;
+        shape.setFill(value);
+        return shape;
+    }
     private void init(Stage primaryStage) {
         Pane main= new Pane();
+        main.getChildren().addAll(CreateBackground(0,0,800,600,Color.CHOCOLATE));
         main.setPrefSize(800, 600);
+        main.setStyle("-fx-border-color: #464646;");
         buf=null;
         Group root = new Group();
         primaryStage.setScene(new Scene(root));
@@ -40,9 +52,10 @@ public class View extends Application {
         int numOfColumns = 15;//(int) (image.getWidth() / Piece.SIZE);
         int numOfRows = 15;//(int) (image.getHeight() / Piece.SIZE);
         // create desk
-        final Desk desk = new Desk(numOfColumns, numOfRows);
+        final Desk desk = new Desk(numOfColumns, numOfRows,Color.LIGHTGRAY);
+        
         // create puzzle pieces
-        final Desk hand= new Desk(8, 1);
+        final Desk hand= new Desk(8, 1,Color.DARKBLUE);
         final List<Piece> pieces  = new ArrayList<Piece>();
         for (int col = 0; col < 8; col++) {
             for (int row = 0; row < 1; row++) {
@@ -65,7 +78,7 @@ public class View extends Application {
      * Node that represents the playing area/ desktop where the puzzle pices sit
      */
     public static class Desk extends Pane {
-        Desk(int numOfColumns, int numOfRows) {
+        Desk(int numOfColumns, int numOfRows,Paint value) {
             setStyle("-fx-border-image-source: PuzzlePieces-picture.jpg; " +
                     "-fx-border-color: #464646; " +
                     "-fx-effect: innershadow( two-pass-box , rgba(0,0,0,0.8) , 15, 0.0 , 0 , 4 );");
@@ -77,7 +90,9 @@ public class View extends Application {
             // create path for lines
             Path grid = new Path();
             grid.setStroke(Color.rgb(50, 50, 50));
-            getChildren().add(grid);
+            getChildren().addAll( View.CreateBackground(0,0,DESK_WIDTH,DESK_HEIGHT,value),grid);
+            //getChildren().add(grid);
+            
             
             // create vertical lines
              for (int col = 0; col < numOfColumns - 1; col++) {
@@ -172,7 +187,7 @@ public class View extends Application {
                     {
                         setTranslateX(0);
                         setTranslateY(0);
-                        
+                        buf=null;
                     }
                     
                 }
@@ -232,7 +247,7 @@ public class View extends Application {
         public void setInactive() {
             setEffect(null);
             setDisable(true);
-            toBack();
+            toFront();
         }
 
         public double getCorrectX() { return correctX; }
