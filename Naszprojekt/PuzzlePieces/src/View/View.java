@@ -1,5 +1,8 @@
 package View;
-
+import Controller.Controler;
+import Model.Hand;
+import Model.Field;
+import Controller.Controler;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.animation.Timeline;
@@ -55,7 +58,7 @@ public class View extends Application {
         // create desk
         final Desk desk = new Desk(numOfColumns, numOfRows,Color.LIGHTGRAY);
         
-        // create  pieces
+        // creat-e  pieces
         final Desk hand= new Desk(7, 1,Color.DARKBLUE);
         final Desk toChange= new Desk(7, 1, Color.DEEPPINK);
         final List<Piece> pieces  = new ArrayList<Piece>();
