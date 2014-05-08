@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 
-package puzzlepieces;
+package View;
 
-import puzzlepieces.Field;
+import View.Field;
 
 /**
  *
