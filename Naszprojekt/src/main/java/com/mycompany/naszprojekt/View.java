@@ -1,4 +1,4 @@
-package View;
+package puzzlepieces;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -55,11 +54,10 @@ public class View extends Application {
         // create desk
         final Desk desk = new Desk(numOfColumns, numOfRows,Color.LIGHTGRAY);
         
-        // create  pieces
-        final Desk hand= new Desk(7, 1,Color.DARKBLUE);
-        final Desk toChange= new Desk(7, 1, Color.DEEPPINK);
+        // create puzzle pieces
+        final Desk hand= new Desk(8, 1,Color.DARKBLUE);
         final List<Piece> pieces  = new ArrayList<Piece>();
-        for (int col = 0; col < 7; col++) {
+        for (int col = 0; col < 8; col++) {
             for (int row = 0; row < 1; row++) {
                 int x = col * Piece.SIZE;
                 int y = 0;
@@ -70,9 +68,7 @@ public class View extends Application {
         }
         // create vbox for desk and buttons*/
         VBox vb = new VBox(10);
-        HBox hb=new HBox(25);
-        hb.getChildren().addAll(hand,toChange);
-        vb.getChildren().addAll(desk,hb);
+        vb.getChildren().addAll(desk,hand);
          main.getChildren().addAll(vb);
          main.getChildren().addAll(pieces);
         root.getChildren().addAll(main);
@@ -129,6 +125,9 @@ public class View extends Application {
         @Override protected void layoutChildren() {}
     }
 
+    /**
+     * Node that represents a puzzle piece
+     */
     public static class Piece extends Parent {
         public static final int SIZE = 25;
         private double correctX;
@@ -181,6 +180,7 @@ public class View extends Application {
                         setTranslateY((me.getSceneY()-correctY)-(me.getSceneY()%25)-385);
                         
                         contr.model.tab.set(contr.model.hand.pop((int) (correctX/25)), x, y);
+                        
                         buf=null;
                     }
                     else

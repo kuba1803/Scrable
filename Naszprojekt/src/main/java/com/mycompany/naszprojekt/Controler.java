@@ -4,12 +4,17 @@
  * and open the template in the editor.
  */
 
-package View;
+package puzzlepieces;
 
 /**
  *
  * @author kuba1_000
  */
-public class Scrabble {
+public class Controler {
+    public Model model;
+    public Controler()
+    {
+        model=new Model();
+    }
     
 }
