@@ -1,8 +1,6 @@
 package View;
-import Controller.Controler;
-import Model.Hand;
+import Controller.Registered;
 import Model.Field;
-import Controller.Controler;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.animation.Timeline;
@@ -31,8 +29,16 @@ import javafx.stage.Stage;
 public class View extends Application {
     private Timeline timeline;
     private static Piece buf;
-    private static Controler contr= new Controler();
-
+    private static Registered reg;
+    private boolean [][]matrix;
+    public View(Registered a)
+             {              
+                 reg=a;
+            }
+    public void setReg(Registered a)
+    {
+        reg=a;
+    }
     public static Shape CreateBackground(int x,int y,double vectx,double vecty, Paint value)
     {
         Rectangle background = new Rectangle();
@@ -56,26 +62,28 @@ public class View extends Application {
         int numOfColumns = 15;//(int) (image.getWidth() / Piece.SIZE);
         int numOfRows = 15;//(int) (image.getHeight() / Piece.SIZE);
         // create desk
+        matrix=new boolean[15][15];
         final Desk desk = new Desk(numOfColumns, numOfRows,Color.LIGHTGRAY);
         
         // creat-e  pieces
-        final Desk hand= new Desk(7, 1,Color.DARKBLUE);
+        final Desk hand= new Desk(7, 1,Color.DARKBLUE)
         final Desk toChange= new Desk(7, 1, Color.DEEPPINK);
         final List<Piece> pieces  = new ArrayList<Piece>();
         for (int col = 0; col < 7; col++) {
             for (int row = 0; row < 1; row++) {
                 int x = col * Piece.SIZE;
                 int y = 0;
-                final Piece piece = new Piece(contr.model.hand.hand[col],x, y,
+                final Piece piece = new Piece(reg.gethand(col),x, y,
                         desk.getWidth(), desk.getHeight());
                 pieces.add(piece);
             }
         }
         // create vbox for desk and buttons*/
         VBox vb = new VBox(10);
-        HBox hb=new HBox(25);
-        hb.getChildren().addAll(hand,toChange);
-        vb.getChildren().addAll(desk,hb);
+        HBox addictField=new HBox(25);
+        addictField.getChildren().addAll(hand,toChange);
+        vb.getChildren().addAll(desk,addictField);
+        HBox hb= new HBox(50);
          main.getChildren().addAll(vb);
          main.getChildren().addAll(pieces);
         root.getChildren().addAll(main);
@@ -84,7 +92,7 @@ public class View extends Application {
     /**
      * Node that represents the playing area/ desktop where the puzzle pices sit
      */
-    public static class Desk extends Pane {
+    public  class Desk extends Pane {
         Desk(int numOfColumns, int numOfRows,Paint value) {
             setStyle("-fx-border-image-source: PuzzlePieces-picture.jpg; " +
                     "-fx-border-color: #464646; " +
@@ -120,11 +128,12 @@ public class View extends Application {
                 public void handle(MouseEvent me) {
                     int x=((int)me.getSceneX())/25;
                     int y=(int) (me.getSceneY()/25);
-                    if(buf!=null&&contr.model.tab.check(x, y)){
-                        contr.model.tab.set(contr.model.hand.pop((int) (buf.correctX/25)), x, y);
+                    if(buf!=null&&/*contr.model.tab.check(x, y)*/matrix[x][y]==false){
+                    reg.setmap(reg.gethand((int) (buf.correctX/25)).current, x, y);
                     buf.setTranslateX((me.getSceneX()-buf.correctX)-(me.getSceneX()%25));
                     buf.setTranslateY((me.getSceneY()-buf.correctY)-(me.getSceneY()%25));
-                    buf.setInactive();
+                    //buf.setInactive();
+                    matrix[x][y]=true;
                     buf=null;}
                 }
             });
@@ -132,7 +141,7 @@ public class View extends Application {
         @Override protected void layoutChildren() {}
     }
 
-    public static class Piece extends Parent {
+    public  class Piece extends Parent {
         public static final int SIZE = 25;
         private double correctX;
         private double correctY;
@@ -168,6 +177,9 @@ public class View extends Application {
             setOnMousePressed(new EventHandler<MouseEvent>() {
                 public void handle(MouseEvent me) {
                     toFront();
+                    int x=((int)me.getSceneX())/25;
+                    int y=(int) (me.getSceneY()/25);
+                    if(me.getSceneX()<=375&& me.getSceneY()<375)matrix[x][y]=false;
                     startDragX = getTranslateX();
                     startDragY = getTranslateY();
                     dragAnchor = new Point2D(me.getSceneX(), me.getSceneY());
@@ -177,17 +189,19 @@ public class View extends Application {
                 public void handle(MouseEvent me) {
                     int x=((int)me.getSceneX())/25;
                     int y=(int) (me.getSceneY()/25);
-                    if(me.getSceneX()<=375&& me.getSceneY()<375&&contr.model.tab.check(x, y))
+                    if(me.getSceneX()<=375&& me.getSceneY()<375&&/*contr.model.tab.check(x, y)*/matrix[x][y]==false)
                     {
-                        setInactive();
+                        //setInactive();
+                        matrix[x][y]=true;
                         setTranslateX((me.getSceneX()-correctX)-(me.getSceneX()%25));
                         setTranslateY((me.getSceneY()-correctY)-(me.getSceneY()%25)-385);
                         
-                        contr.model.tab.set(contr.model.hand.pop((int) (correctX/25)), x, y);
+                        reg.setmap(reg.gethand((int) (correctX/25)).current, x, y);
                         buf=null;
                     }
                     else
                     {
+                        if(me.getSceneX()<=375&& me.getSceneY()<375)matrix[x][y]=false;
                         setTranslateX(0);
                         setTranslateY(0);
                         buf=null;
@@ -197,7 +211,14 @@ public class View extends Application {
             });
            setOnMouseClicked(new EventHandler<MouseEvent>(){
                 public void handle(MouseEvent me) {
-                    if(buf!=null)buf.setActive();
+                    if(buf!=null)
+                    {
+                        buf.setTranslateX(0);
+                        buf.setTranslateY(0);
+                    }
+                    int x=((int)me.getSceneX())/25;
+                    int y=(int) (me.getSceneY()/25);
+                    if(me.getSceneX()<=375&& me.getSceneY()<375)matrix[x][y]=false;
                     buf=(Piece) me.getSource();
                 }
             });
@@ -259,10 +280,14 @@ public class View extends Application {
     }
 
     @Override public void start(Stage primaryStage) throws Exception {
+        
         init(primaryStage);
         primaryStage.show();
     }
-
+ /*   public void start()
+    {
+        launch();
+    }*/
     /**
      * The main() method is ignored in correctly deployed JavaFX 
      * application. main() serves only as fallback in case the 

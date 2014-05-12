@@ -7,6 +7,8 @@
 package Controller;
 
 import Model.Model;
+import View.View;
+import javafx.stage.Stage;
 
 /**
  *
@@ -14,26 +16,23 @@ import Model.Model;
  */
 public class Controler {
     public Model model;
-    //public View view;
-    /*public Controler(Model model, View view)
+    public View view;
+    public Registered reg;
+    public Controler(Model model, View view)
     {
         this.model = model;
         this.view = view;
-        
-        this.view.registerPieceSelected( 
+        this.reg=new Action(this);
+        view.setReg(reg);
     }
-    
-    public void pieceSelected( ){
-    }
-    
-    public void piecePasted( ) {
-    }
-    
-    
-    }*/
     public Controler()
     {
-        model=new Model();
+        this.model=new Model();
+        this.reg=new Action(this);
+        this.view=new View(reg);
     }
-    
+    public void start(Stage primaryStage) throws Exception
+    {
+        view.start(primaryStage);
+    }
 }

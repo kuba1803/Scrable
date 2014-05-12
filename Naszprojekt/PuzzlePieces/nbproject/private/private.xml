@@ -3,10 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/kuba1_000/Documents/NetBeansProjects/PuzzlePieces/src/puzzlepieces/Model.java</file>
-            <file>file:/C:/Users/kuba1_000/Documents/NetBeansProjects/PuzzlePieces/src/puzzlepieces/Field.java</file>
-            <file>file:/C:/Users/kuba1_000/Documents/NetBeansProjects/PuzzlePieces/src/puzzlepieces/Hand.java</file>
-            <file>file:/C:/Users/kuba1_000/Documents/NetBeansProjects/PuzzlePieces/src/puzzlepieces/Controler.java</file>
+            <file>file:/C:/Users/kuba1_000/Documents/NetBeansProjects/PuzzlePieces/src/Controller/Controler.java</file>
+            <file>file:/C:/Users/kuba1_000/Documents/NetBeansProjects/PuzzlePieces/src/Model/Shallow.java</file>
+            <file>file:/C:/Users/kuba1_000/Documents/NetBeansProjects/PuzzlePieces/src/Model/Hand.java</file>
+            <file>file:/C:/Users/kuba1_000/Documents/NetBeansProjects/PuzzlePieces/src/View/View.java</file>
+            <file>file:/C:/Users/kuba1_000/Documents/NetBeansProjects/PuzzlePieces/src/Model/Field.java</file>
+            <file>file:/C:/Users/kuba1_000/Documents/NetBeansProjects/PuzzlePieces/src/Model/Table.java</file>
         </group>
     </open-files>
 </project-private>
