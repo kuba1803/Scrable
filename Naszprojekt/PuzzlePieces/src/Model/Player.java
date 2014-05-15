@@ -31,7 +31,7 @@ public class Player {
         List<wsp> start = new ArrayList<wsp>();
         List<Boolean> kierunek = new ArrayList<Boolean>();
         for (wsp e : wspol) {
-            if ((e.x == 0 && e.y == 0) || (e.x == 0 && !tab.get(e.x, e.y - 1).isFull) || (e.y == 0 && !tab.get(e.x - 1, e.y).isFull) || !tab.get(e.x - 1, e.y - 1).isFull) {
+            if ((e.x == 0 && e.y == 0) || (e.x == 0 && !tab.get(e.x, e.y - 1).isFull) || (e.y == 0 && !tab.get(e.x - 1, e.y).isFull)||(!tab.get(e.x-1, e.y).isFull)||(!tab.get(e.x,e.y-1).isFull)) {
                 start.add(e);
                 start.add(e);
                 kierunek.add(Boolean.TRUE);
@@ -39,17 +39,17 @@ public class Player {
             } else {
                 int x = e.x;
                 int y = e.y;
-                if (x != 0 && tab.get(x - 1, y).isFull) {
-                    while (x != 0 && tab.get(x - 1, y).isFull) {
+                if (x >= 0 && tab.get(x - 1, y).isFull) {
+                    while (x > 0 && tab.get(x - 1, y).isFull) {
                         x--;
                     }
                     start.add(new wsp(x, y));
                     kierunek.add(Boolean.TRUE);
                     x = e.x;
                 }
-                if (y != 0 && tab.get(x, y - 1).isFull) {
+                if (y >= 0 && tab.get(x, y - 1).isFull) {
                     {
-                        while (y != 0 && tab.get(x, y - 1).isFull) {
+                        while (y > 0 && tab.get(x, y - 1).isFull) {
                             y--;
                         }
                         start.add(new wsp(x, y));
@@ -60,7 +60,7 @@ public class Player {
         }
         for (int i = 0; i < start.size(); i++) {
             for (int j = i + 1; j < start.size(); j++) {
-                if (start.get(i).equals(start.get(j))) {
+                if (start.get(i).equals(start.get(j))&&(kierunek.get(i).equals(kierunek.get(j)))) {
                     start.remove(j);
                     kierunek.remove(j);
                     j--;

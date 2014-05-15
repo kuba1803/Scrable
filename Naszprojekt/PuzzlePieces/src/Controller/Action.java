@@ -56,6 +56,7 @@ public class Action implements Registered {
         {
             wspolrz.add(new wsp(e.x,e.y));
         }
+        contr.model.player.conter(wspolrz);
         
     }
 
