@@ -1,15 +1,18 @@
 package View;
 import Controller.Registered;
 import Model.Field;
+import Model.Shallow;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -31,13 +34,50 @@ public class View extends Application {
     private static Piece buf;
     private static Registered reg;
     private boolean [][]matrix;
+    private boolean [] isToChange;
+    private final user us[];
+    private final List<Piece> plansza;
+    private final List<Piece> change;
+    private final List<Piece> onHand;
     public View(Registered a)
              {              
                  reg=a;
+                 us=new user[4];
+                 plansza=new ArrayList<Piece>();
+                 change=new ArrayList<Piece>();
+                 onHand=new ArrayList<Piece>();
             }
-    public void setReg(Registered a)
-    {
-        reg=a;
+    public class user extends Pane{
+        int score;
+        Text text;
+        public Text wyn;
+        public user(int i)
+        {
+            score=0;
+            Shape tmp=CreateBackground(0,0,120,120,Color.AQUA);
+            if(i<reg.getPlayerCount())
+            {
+            text=new Text(50,40,reg.getPlayer().id);
+            wyn=new Text(50,60,""+score);
+            }
+            else
+            {
+            text=new Text(50,40,"Puste");
+            wyn=new Text(50,60,"0");
+            }
+            getChildren().addAll(tmp,text,wyn);
+        }
+    }
+    public static Shape CreateUser(int x,int y,double vectx,double vecty, Paint value,int countPlayer)
+    {   
+        Text id;
+        Shape tmp=CreateBackground(x,y,vectx,vecty,value);
+        if(countPlayer<reg.getPlayerCount())
+        {
+            id=new Text(x+vectx/2,y+vecty/2,reg.getPlayer().id);
+        }
+        
+        return null;
     }
     public static Shape CreateBackground(int x,int y,double vectx,double vecty, Paint value)
     {
@@ -50,7 +90,7 @@ public class View extends Application {
         shape.setFill(value);
         return shape;
     }
-    private void init(Stage primaryStage) {
+    private void init(final Stage primaryStage) {
         Pane main= new Pane();
         main.getChildren().addAll(CreateBackground(0,0,800,600,Color.CHOCOLATE));
         main.setPrefSize(800, 600);
@@ -63,10 +103,11 @@ public class View extends Application {
         int numOfRows = 15;//(int) (image.getHeight() / Piece.SIZE);
         // create desk
         matrix=new boolean[15][15];
+        isToChange=new boolean[7];
         final Desk desk = new Desk(numOfColumns, numOfRows,Color.LIGHTGRAY);
         
         // creat-e  pieces
-        final Desk hand= new Desk(7, 1,Color.DARKBLUE)
+        final Desk hand= new Desk(7, 1,Color.DARKBLUE);
         final Desk toChange= new Desk(7, 1, Color.DEEPPINK);
         final List<Piece> pieces  = new ArrayList<Piece>();
         for (int col = 0; col < 7; col++) {
@@ -74,18 +115,58 @@ public class View extends Application {
                 int x = col * Piece.SIZE;
                 int y = 0;
                 final Piece piece = new Piece(reg.gethand(col),x, y,
-                        desk.getWidth(), desk.getHeight());
+                        desk.getWidth(), desk.getHeight(),1);
                 pieces.add(piece);
+                onHand.add(piece);
             }
         }
+        List<Bonus> bonus =new ArrayList<Bonus>();
+        final Bonus bon=new Bonus("5",10,10,Color.RED);
+        bonus.add(new Bonus("(",0,0,Color.RED));
+        bonus.add(bon);
         // create vbox for desk and buttons*/
         VBox vb = new VBox(10);
         HBox addictField=new HBox(25);
         addictField.getChildren().addAll(hand,toChange);
         vb.getChildren().addAll(desk,addictField);
         HBox hb= new HBox(50);
-         main.getChildren().addAll(vb);
-         main.getChildren().addAll(pieces);
+        VBox rightvb= new VBox(10);
+        HBox user1=new HBox(10);
+        HBox user2=new HBox(10);
+        us[0]=new user(0);
+        us[1]=new user(1);
+        us[2]=new user(2);
+        us[3]=new user(3);
+        Button confirm= new Button("Zatwierdz");
+        confirm.setPrefSize(80, 30);
+        confirm.setOnMouseClicked(new EventHandler<MouseEvent>()
+        {
+            @Override
+            public void handle(MouseEvent event) {
+               for(Piece e:change)
+               {
+                   e.setInactive();
+                   e.toBack();
+               }
+               for(Piece e:plansza)
+               {
+                   reg.setmap(e.shallow, e.x, e.y);
+                   e.setInactive();
+               }
+               reg.policz(plansza,0);
+               us[0].score=reg.getScore(0);
+               us[0].wyn.setText(""+us[0].score);
+               plansza.clear();
+               change.clear();
+            }
+        });
+        user1.getChildren().addAll(us[0],us[1]);
+        user2.getChildren().addAll(us[2],us[3]);
+        rightvb.getChildren().addAll(user1,user2,confirm);
+        hb.getChildren().addAll(vb,rightvb);
+        main.getChildren().addAll(hb);
+        main.getChildren().addAll(bonus);
+        main.getChildren().addAll(pieces);
         root.getChildren().addAll(main);
     }
 
@@ -124,23 +205,68 @@ public class View extends Application {
                  );
             }
             
-            setOnMouseClicked(new EventHandler<MouseEvent>(){
+           /* setOnMouseClicked(new EventHandler<MouseEvent>(){
                 public void handle(MouseEvent me) {
                     int x=((int)me.getSceneX())/25;
                     int y=(int) (me.getSceneY()/25);
-                    if(buf!=null&&/*contr.model.tab.check(x, y)*/matrix[x][y]==false){
+                    if(buf!=null&&/*contr.model.tab.check(x, y)matrix[x][y]==false){
                     reg.setmap(reg.gethand((int) (buf.correctX/25)).current, x, y);
                     buf.setTranslateX((me.getSceneX()-buf.correctX)-(me.getSceneX()%25));
                     buf.setTranslateY((me.getSceneY()-buf.correctY)-(me.getSceneY()%25));
                     //buf.setInactive();
                     matrix[x][y]=true;
-                    buf=null;}
+                    buf=null;
+                     }
                 }
-            });
+            });*/
         }
         @Override protected void layoutChildren() {}
     }
-
+    public class Bonus extends Parent
+    {
+        public static final int SIZE = 25;
+        private final double correctX;
+        private final double correctY;
+        private Text text;
+        private Shape pieceStroke;
+        public Bonus(String text,final double correctX, final double correctY,Paint value)
+        {
+            this.correctX = correctX;
+            this.correctY = correctY+385;
+            pieceStroke = createPiece();
+            pieceStroke.setFill(null);
+            this.text=new Text(this.correctX+ 6,this.correctY+19,text);
+            
+            setFocusTraversable(true);
+            setInactive();
+            setCache(true);
+            setFocusTraversable(true);
+            getChildren().addAll( pieceStroke,this.text);
+        }
+        
+        private Shape createPiece() {
+            Shape shape = createPieceRectangle();
+            shape.setTranslateX(correctX);
+            shape.setTranslateY(correctY);
+            shape.setLayoutX(50f);
+            shape.setLayoutY(50f);
+            return shape;
+        }
+        
+        private Rectangle createPieceRectangle() {
+            Rectangle rec = new Rectangle();
+            rec.setX(-50);
+            rec.setY(-50);
+            rec.setWidth(25);
+            rec.setHeight(25);
+            return rec;
+        }
+        public void setInactive() {
+            setEffect(null);
+            setDisable(true);
+            toFront();
+        }
+    }
     public  class Piece extends Parent {
         public static final int SIZE = 25;
         private double correctX;
@@ -151,9 +277,15 @@ public class View extends Application {
         private Shape pieceClip;
         private Point2D dragAnchor;
         private Text text;
-
+        public int mod;
+        private Piece that;
+        public int x;
+        public int y;
+        public Shallow shallow;
         public Piece(final Field field,final double correctX, final double correctY,
-                     final double deskWidth, final double deskHeight) {
+                     final double deskWidth, final double deskHeight,int mod) {
+            this.mod=mod;
+            this.that=this;
             this.correctX = correctX;
             this.correctY = correctY+385;
             // configure clip
@@ -164,6 +296,7 @@ public class View extends Application {
             pieceStroke = createPiece();
             pieceStroke.setFill(Color.AQUA);
             pieceStroke.setStroke(Color.BLACK);
+            shallow=field.current;
             text=new Text(this.correctX+ 6,this.correctY+19,""+field.current.Char);
             text.setFont(Font.font(20));
             // create image view
@@ -177,9 +310,26 @@ public class View extends Application {
             setOnMousePressed(new EventHandler<MouseEvent>() {
                 public void handle(MouseEvent me) {
                     toFront();
+                    
                     int x=((int)me.getSceneX())/25;
                     int y=(int) (me.getSceneY()/25);
-                    if(me.getSceneX()<=375&& me.getSceneY()<375)matrix[x][y]=false;
+                    if(change.contains(this))
+                    {
+                        isToChange[x-8]=false;
+                        that.mod=0;
+                        change.remove(that);
+                    }
+                    else if(plansza.contains(that))
+                    {
+                        matrix[x][y]=false;
+                        that.mod=2;
+                        plansza.remove(that);
+                    }
+                    else 
+                    {
+                        that.mod=1;
+                        onHand.remove(that);
+                    }
                     startDragX = getTranslateX();
                     startDragY = getTranslateY();
                     dragAnchor = new Point2D(me.getSceneX(), me.getSceneY());
@@ -189,39 +339,52 @@ public class View extends Application {
                 public void handle(MouseEvent me) {
                     int x=((int)me.getSceneX())/25;
                     int y=(int) (me.getSceneY()/25);
-                    if(me.getSceneX()<=375&& me.getSceneY()<375&&/*contr.model.tab.check(x, y)*/matrix[x][y]==false)
+                    if(me.getSceneX()<=375&& me.getSceneY()<375&&matrix[x][y]==false)
                     {
+                        plansza.add(that);
                         //setInactive();
                         matrix[x][y]=true;
                         setTranslateX((me.getSceneX()-correctX)-(me.getSceneX()%25));
                         setTranslateY((me.getSceneY()-correctY)-(me.getSceneY()%25)-385);
-                        
-                        reg.setmap(reg.gethand((int) (correctX/25)).current, x, y);
-                        buf=null;
+                        that.x=x;
+                        that.y=y;
+                        //buf=null;
+                    }
+                    else if(me.getSceneX()>=200&&me.getSceneX()<375&& me.getSceneY()<410&&me.getSceneY()>=385&&isToChange[x-8]==false)
+                    {
+                        change.add(that);
+                        setTranslateX((me.getSceneX()-correctX)-(me.getSceneX()%25));
+                        setTranslateY((me.getSceneY()-correctY)-(me.getSceneY()%25)-375);
+                        isToChange[x-8]=true;
                     }
                     else
-                    {
-                        if(me.getSceneX()<=375&& me.getSceneY()<375)matrix[x][y]=false;
+                    {                       
+                        if(me.getSceneX()<=375&& me.getSceneY()<375){matrix[x][y]=false;}
                         setTranslateX(0);
                         setTranslateY(0);
-                        buf=null;
+                        onHand.add(that);
                     }
-                    
                 }
             });
-           setOnMouseClicked(new EventHandler<MouseEvent>(){
+           /*setOnMouseClicked(new EventHandler<MouseEvent>(){
                 public void handle(MouseEvent me) {
+                    that.text.setId(that.getId()+1);
                     if(buf!=null)
                     {
                         buf.setTranslateX(0);
                         buf.setTranslateY(0);
+                        buf=null;
                     }
-                    int x=((int)me.getSceneX())/25;
+                    else
+                    {
+                        int x=((int)me.getSceneX())/25;
                     int y=(int) (me.getSceneY()/25);
                     if(me.getSceneX()<=375&& me.getSceneY()<375)matrix[x][y]=false;
                     buf=(Piece) me.getSource();
+                    }
+                    
                 }
-            });
+            });*/
             setOnMouseDragged(new EventHandler<MouseEvent>() {
                 public void handle(MouseEvent me) {
                     double newTranslateX = startDragX

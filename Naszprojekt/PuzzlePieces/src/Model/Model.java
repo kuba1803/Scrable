@@ -12,7 +12,8 @@ package Model;
  */
 public class Model {
     public Table tab;
-    public Hand hand;
+    public Player player;
+    private int count; 
     private Bag bag;
     private static final char []set={' ',' ',
     'A','A','A','A','A','A','A','A','A',
@@ -36,31 +37,32 @@ public class Model {
     private static final int [] swartosc={0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
     ,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
     ,3,3,3,3,3,3,3,3,3,3,3,3,5,5,5,5,5,6,7,9}; 
-    public Model()
+    public Model(int players)
     {
         tab=new Table(15,15);
-        hand=new Hand(8);
+        count=players;
+        player=new Player("Aga",tab);
         bag=new Bag(set,swartosc);
         for(int i=0;i<8;i++)
         {
-            hand.push(bag.rend());
+            player.hand.push(bag.rend());
         }
        
     }
     public boolean set(int i, int x,int y)
     {
-        if(tab.get(x, y).check()&&hand.check(i))
+        if(tab.get(x, y).check()&&player.hand.check(i))
         {
-            tab.set(hand.pop(i), x, y);
+            tab.set(player.hand.pop(i), x, y);
             return true;
         }
         return false;
     }
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         Model mod =new Model();
         for(int i=0;i<8;i++)
         {
-            System.out.print(mod.hand.hand[i].current.Char);
+            System.out.print(mod.player.hand.hand[i].current.Char);
         }
-    }
+    }*/
 }

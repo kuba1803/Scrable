@@ -18,16 +18,16 @@ public class Controler {
     public Model model;
     public View view;
     public Registered reg;
-    public Controler(Model model, View view)
+   /* public Controler(Model model, View view)
     {
         this.model = model;
         this.view = view;
         this.reg=new Action(this);
         view.setReg(reg);
-    }
+    }*/
     public Controler()
     {
-        this.model=new Model();
+        this.model=new Model(1);
         this.reg=new Action(this);
         this.view=new View(reg);
     }

@@ -15,8 +15,10 @@ import Model.Field;
 public class Table
 {
      Field[][] table;
+     int [][] mnoznik;
      public Table(int x,int y)
      {
+         mnoznik=new int [x][y];
          table= new Field[x][y];
          for(int i=0;i<x;i++)
          {
@@ -35,4 +37,12 @@ public class Table
     {
        return table[x][y].check();
     }
+     public int getx(int x,int y)
+     {
+         return mnoznik[x][y]+1;
+     }
+     public void setx(int x,int y)
+     {
+         mnoznik[x][y]=0;
+     }
 }

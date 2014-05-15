@@ -13,6 +13,7 @@ package Model;
 public class Field {
     public Shallow current;
     public boolean isFull;
+    public int mnoznik;
             public Field()
             {
                 current=new Shallow();

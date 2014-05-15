@@ -7,7 +7,11 @@
 package Controller;
 
 import Model.Field;
+import Model.Player;
 import Model.Shallow;
+import View.View;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -15,6 +19,7 @@ import Model.Shallow;
  */
 public class Action implements Registered {
 
+    
     Controler contr;
     public Action(Controler a)
     {
@@ -32,7 +37,31 @@ public class Action implements Registered {
 
     @Override
     public Field gethand(int i) {
-        return contr.model.hand.hand[i];
+        return contr.model.player.hand.hand[i];
+    }
+
+    @Override
+    public int getPlayerCount() {
+        return 1; //To change body of generated methods, choose Tools | Templates.
+    }
+    public Player getPlayer()
+    {
+        return contr.model.player;
+    }
+
+    @Override
+    public void policz(List<View.Piece> news,int player) {
+        List<wsp> wspolrz = new ArrayList<wsp>();
+        for(View.Piece e:news)
+        {
+            wspolrz.add(new wsp(e.x,e.y));
+        }
+        
+    }
+
+    @Override
+    public int getScore(int i) {
+        return contr.model.player.score;
     }
 
    
