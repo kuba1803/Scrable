@@ -297,7 +297,7 @@ public class View extends Application {
             pieceStroke.setFill(Color.AQUA);
             pieceStroke.setStroke(Color.BLACK);
             shallow=field.current;
-            text=new Text(this.correctX+ 6,this.correctY+19,""+field.current.Char);
+            text=new Text(this.correctX+ 6,this.correctY+19,""+field.current.value);
             text.setFont(Font.font(20));
             // create image view
             setFocusTraversable(true);

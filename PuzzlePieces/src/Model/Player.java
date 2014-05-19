@@ -5,7 +5,8 @@
  */
 package Model;
 
-import Controller.wsp;
+import Controller.Coordinates;
+import Controller.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,100 +19,84 @@ public class Player {
     public int score;
     public String id;
     public Hand hand;
-    public Table tab;
+    public Board tab;
 
-    public Player(String id, Table tab) {
+    public Player(String id, Board tab) {
         this.tab = tab;
         score = 0;
         this.id = id;
         hand = new Hand(8);
     }
 
-    public void conter(List<wsp> wspol) {
-        List<wsp> start = new ArrayList<wsp>();
-        List<Boolean> kierunek = new ArrayList<Boolean>();
-        for (wsp e : wspol) {
-            if ((e.x == 0 && e.y == 0) || (e.x == 0 && !tab.get(e.x, e.y - 1).isFull) || (e.y == 0 && !tab.get(e.x - 1, e.y).isFull)||(!tab.get(e.x-1, e.y).isFull)||(!tab.get(e.x,e.y-1).isFull)) {
-                start.add(e);
-                start.add(e);
-                kierunek.add(Boolean.TRUE);
-                kierunek.add(Boolean.TRUE);
-            } else {
-                int x = e.x;
-                int y = e.y;
-                if (x >= 0 && tab.get(x - 1, y).isFull) {
-                    while (x > 0 && tab.get(x - 1, y).isFull) {
-                        x--;
-                    }
-                    start.add(new wsp(x, y));
-                    kierunek.add(Boolean.TRUE);
-                    x = e.x;
-                }
-                if (y >= 0 && tab.get(x, y - 1).isFull) {
-                    {
-                        while (y > 0 && tab.get(x, y - 1).isFull) {
-                            y--;
-                        }
-                        start.add(new wsp(x, y));
-                        kierunek.add(Boolean.FALSE);
-                    }
-                }
+    public void conter(List<Pair> wspol) {
+        List<Coordinates> start = new ArrayList<Coordinates>();
+        for (Pair e : wspol) {
+
+            if ((e.x > 0 && tab.get(e.x - 1, e.y).isFull) || (e.x < 14 && tab.get(e.x + 1, e.y).isFull)) {
+                start.add(new Coordinates(e.x, e.y, tab, 1));
+            }
+            if ((e.y > 0 && tab.get(e.x, e.y - 1).isFull) || (e.y < 14 && tab.get(e.x, e.y + 1).isFull)) {
+                start.add(new Coordinates(e.x, e.y, tab, 2));
+            }
+            if ((e.x == 0 || !tab.get(e.x - 1, e.y).isFull) && (e.x == 14 || !tab.get(e.x + 1, e.y).isFull) && (e.y == 0 || !tab.get(e.x, e.y - 1).isFull) && (e.y == 14 || !tab.get(e.x, e.y + 1).isFull)) {
+                start.add(new Coordinates(e.x, e.y, tab, 0));
             }
         }
-        for (int i = 0; i < start.size(); i++) {
-            for (int j = i + 1; j < start.size(); j++) {
-                if (start.get(i).equals(start.get(j))&&(kierunek.get(i).equals(kierunek.get(j)))) {
+        for(int i=0;i<start.size();i++)
+        {
+            Coordinates e=start.get(i);
+            for(int j=i+1;j<start.size();j++)
+            {
+                if(start.get(j).equals(start.get(i)))
+                {
                     start.remove(j);
-                    kierunek.remove(j);
                     j--;
                 }
             }
         }
-        for (int i = 0; i < start.size(); i++) {
+        for (Coordinates e : start) {
             int mnoznik = 1;
             int slowo = 0;
-            int x = start.get(i).x;
-            int y = start.get(i).y;
-            if (kierunek.get(i)) {
-
+            int x = e.startx;
+            int y = e.starty;
+            if (e.wymiar == 0) {
+                if (tab.mnoznik[x][y] > 3) {
+                    slowo += tab.get(x, y).current.value * (tab.getx(x, y) - 2);
+                } else {
+                    slowo += tab.get(x, y).current.value * tab.getx(x, y);
+                }
+            } else if (e.wymiar == 1) {
                 do {
-                    if (tab.getx(x, y) != 1) {
-                        if (tab.getx(x, y) < 4) {
-                            slowo += tab.get(x, y).current.value * tab.getx(x, y);
-                        } else {
-                            slowo += tab.get(x, y).current.value;
-                            mnoznik *= tab.getx(x, y) - 2;
-                        }
-                    } else {
+                    if (tab.mnoznik[x][y] > 3) {
                         slowo += tab.get(x, y).current.value;
+                        mnoznik *= (tab.getx(x, y) - 2);
+
+                    } else {
+                        slowo += tab.get(x, y).current.value * tab.getx(x, y);
                     }
                     x++;
-                } while (x < 15 && tab.get(x, y).isFull);
-                slowo*=mnoznik;
-            }
-            else
-            {
+                } while (x <= e.stopx);
+            } else {
                 do {
-                    if (tab.getx(x, y) != 1) {
-                        if (tab.getx(x, y) < 4) {
-                            slowo += tab.get(x, y).current.value * tab.getx(x, y);
-                        } else {
-                            slowo += tab.get(x, y).current.value;
-                            mnoznik *= tab.getx(x, y) - 2;
-                        }
-                    } else {
+                    if (tab.mnoznik[x][y] > 3) {
                         slowo += tab.get(x, y).current.value;
+                        mnoznik *= (tab.getx(x, y) - 2);
+
+                    } else {
+                        slowo += tab.get(x, y).current.value * tab.getx(x, y);
                     }
                     y++;
-                } while (y < 15 && tab.get(x, y).isFull);
-                slowo*=mnoznik;
+                } while (y <= e.stopy);
+
             }
-            score+=slowo;
-            for(wsp e:wspol)
-            {
-                    tab.setx(e.x, e.y);
-            }
+            slowo *= mnoznik;
+            score += slowo;
+            mnoznik = 1;
+            slowo=0;
         }
-        
+        for (Pair e : wspol) {
+            tab.setx(e.x, e.y);
+        }
     }
+
 }

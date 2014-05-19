@@ -11,7 +11,7 @@ package Model;
  * @author kuba1_000
  */
 public class Model {
-    public Table tab;
+    public Board tab;
     public Player player;
     private int count; 
     private Bag bag;
@@ -39,7 +39,7 @@ public class Model {
     ,3,3,3,3,3,3,3,3,3,3,3,3,5,5,5,5,5,6,7,9}; 
     public Model(int players)
     {
-        tab=new Table(15,15);
+        tab=new Board(15,15);
         count=players;
         player=new Player("Aga",tab);
         bag=new Bag(set,swartosc);

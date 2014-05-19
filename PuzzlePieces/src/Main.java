@@ -1,8 +1,6 @@
 
 import Controller.Controler;
-import Model.Model;
-import View.View;
-import Controller.Controler;
+import dictionary.Dictionary;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -23,7 +21,6 @@ public class Main extends Application{
        control.start();
     }*/
     @Override public void start(Stage primaryStage) throws Exception {
-        
         Controler control= new Controler();
        control.start(primaryStage);
     }

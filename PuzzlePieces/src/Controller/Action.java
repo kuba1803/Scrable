@@ -51,10 +51,10 @@ public class Action implements Registered {
 
     @Override
     public void policz(List<View.Piece> news,int player) {
-        List<wsp> wspolrz = new ArrayList<wsp>();
+        List<Pair> wspolrz = new ArrayList<Pair>();
         for(View.Piece e:news)
         {
-            wspolrz.add(new wsp(e.x,e.y));
+            wspolrz.add(new Pair(e.x,e.y));
         }
         contr.model.player.conter(wspolrz);
         
