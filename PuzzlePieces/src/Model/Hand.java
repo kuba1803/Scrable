@@ -24,7 +24,7 @@ public class Hand {
         isFiald=0;
         this.max=max;
     }
-    public void push(Shallow a)
+    public void push(Tail a)
     {
         hand[isFiald].set(a);
         isFiald++;
@@ -33,9 +33,10 @@ public class Hand {
     {
        return !hand[i].check();
     }
-    public Shallow pop(int i)
+    public Tail pop(int i)
     {
-        hand[i].isFull=false;
+        //hand[i].isFull=false;
+        //isFiald--;
         return hand[i].current;
     }
 }

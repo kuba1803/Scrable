@@ -8,7 +8,7 @@ package Controller;
 
 import Model.Field;
 import Model.Player;
-import Model.Shallow;
+import Model.Tail;
 import View.View.Piece;
 import java.util.List;
 
@@ -18,10 +18,17 @@ import java.util.List;
  */
 public interface Registered {
     public boolean checkmap(int x, int y);
-    public void setmap(Shallow id, int x, int y);
-    public Field gethand(int i);
-    public Player getPlayer();
+    public void setmap(Tail id, int x, int y,int player, int position);
+    public void unsetmap(Tail id, int x, int y);
+    public Tail getTail(int i);
+    public Player getPlayer(int i);
     public int getPlayerCount();
     public void policz(List<Piece> news,int player);
     public int getScore(int i);
+    public boolean checkWords(List<Piece> list);
+    public int getTailSize();
+    public Tail getHand(int i, int player);
+    public void rend(int i);
+    public void change(Tail tail);
+    public int getBonus(int x,int y);
 }

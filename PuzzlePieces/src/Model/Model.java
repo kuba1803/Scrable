@@ -12,9 +12,9 @@ package Model;
  */
 public class Model {
     public Board tab;
-    public Player player;
-    private int count; 
-    private Bag bag;
+    public Player player[];
+    public int count; 
+    public Bag bag;
     private static final char []set={' ',' ',
     'A','A','A','A','A','A','A','A','A',
     'E','E','E','E','E','E','E',
@@ -37,23 +37,28 @@ public class Model {
     private static final int [] swartosc={0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
     ,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
     ,3,3,3,3,3,3,3,3,3,3,3,3,5,5,5,5,5,6,7,9}; 
-    public Model(int players)
+    public static int size=swartosc.length;
+    public Model(int players, String [] id)
     {
         tab=new Board(15,15);
-        count=players;
-        player=new Player("Aga",tab);
+         count=players;
+        player=new Player[players];
+        for(int i=0;i<players;i++)
+        {
+            player[i]=new Player(id[i],tab);
+        }
         bag=new Bag(set,swartosc);
-        for(int i=0;i<8;i++)
+       /* for(int i=0;i<8;i++)
         {
             player.hand.push(bag.rend());
-        }
+        }*/
        
     }
-    public boolean set(int i, int x,int y)
+    public boolean set(int i, int x,int y,int players)
     {
-        if(tab.get(x, y).check()&&player.hand.check(i))
+        if(tab.get(x, y).check()&&player[players].hand.check(i))
         {
-            tab.set(player.hand.pop(i), x, y);
+            tab.set(player[players].hand.pop(i), x, y);
             return true;
         }
         return false;

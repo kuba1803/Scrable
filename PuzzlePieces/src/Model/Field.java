@@ -11,15 +11,15 @@ package Model;
  * @author kuba1_000
  */
 public class Field {
-    public Shallow current;
+    public Tail current;
     public boolean isFull;
     public int mnoznik;
             public Field()
             {
-                current=new Shallow();
+                current=new Tail();
                 isFull=false;
             }
-            public boolean set(Shallow forHend)
+            public boolean set(Tail forHend)
             {
                 if(isFull)return false;
                 current.Char=forHend.Char;

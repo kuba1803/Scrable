@@ -15,30 +15,38 @@ import java.util.Random;
  */
 public class Bag {
     Random randomize;
-    ArrayList<Shallow> set;
-    int size;
+    ArrayList<Tail> set;
+    public int size;
     public Bag(char[] tab,int []wartosc)
     {
         size=tab.length;
-        set = new ArrayList<Shallow>();
+        set = new ArrayList<Tail>();
         randomize=new Random();
         for(int i=0;i<tab.length;i++)
         {
-            set.add(new Shallow(tab[i],wartosc[i]));
+            set.add(new Tail(tab[i],wartosc[i],i+1));
         }
     }
     public boolean isEmpty()
     {
         return size==0;
     }
-    public Shallow rend()
+    public Tail rend()
     {
         if(size==0)return null;
         int i =randomize.nextInt(size);
         size--;
-        Shallow tmp=set.get(i);
+        Tail tmp=set.get(i);
         set.remove(i);
         return tmp;
-        
+    }
+    public Tail getTail(int i)
+    {
+        return set.get(i);
+    }
+    public void setBack(Tail tail)
+    {
+        set.add(tail);
+        size++;
     }
 }

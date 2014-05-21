@@ -8,6 +8,8 @@ package Controller;
 
 import Model.Model;
 import View.View;
+import dictionary.Dictionary;
+import java.io.IOException;
 import javafx.stage.Stage;
 
 /**
@@ -18,6 +20,7 @@ public class Controler {
     public Model model;
     public View view;
     public Registered reg;
+    public Dictionary dictionary;
    /* public Controler(Model model, View view)
     {
         this.model = model;
@@ -25,11 +28,13 @@ public class Controler {
         this.reg=new Action(this);
         view.setReg(reg);
     }*/
-    public Controler()
+    public Controler() throws IOException
     {
-        this.model=new Model(1);
+        String []tab={"Aga", "Kuba","gracz","gracz"};
+        this.model=new Model(2,tab);
         this.reg=new Action(this);
         this.view=new View(reg);
+        this.dictionary = new Dictionary();
     }
     public void start(Stage primaryStage) throws Exception
     {
