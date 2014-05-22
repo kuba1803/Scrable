@@ -21,9 +21,11 @@ public class Field {
             }
             public boolean set(Tail forHend)
             {
+                System.out.print(forHend.Char);
                 if(isFull)return false;
-                current.Char=forHend.Char;
-                current.value=forHend.value;
+                current=forHend;
+               // current.Char=forHend.Char;
+               // current.value=forHend.value;
                 isFull=true;
                 return true;
             }

@@ -28,13 +28,20 @@ public class Controler {
         this.reg=new Action(this);
         view.setReg(reg);
     }*/
-    public Controler() throws IOException
+    public Controler(String []tab,int i,int lenguage) throws IOException
     {
-        String []tab={"Aga", "Kuba","gracz","gracz"};
-        this.model=new Model(2,tab);
+        if(lenguage==0)
+        {
+            this.dictionary = Dictionary.Polish();
+        }
+        else 
+                {
+                    this.dictionary = Dictionary.English();
+                }
+        this.model=new Model(i,tab,this.dictionary);
         this.reg=new Action(this);
         this.view=new View(reg);
-        this.dictionary = new Dictionary();
+        
     }
     public void start(Stage primaryStage) throws Exception
     {

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?scenebuilder-background-color 0x006299ff?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="299.0" prefWidth="313.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="StartPageContraller">
+  <children>
+    <Accordion layoutX="0.0" layoutY="0.0" prefHeight="268.0" prefWidth="313.0">
+      <expandedPane>
+        <TitledPane fx:id="x2" animated="false" text="Słownik">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <RadioButton cache="false" layoutX="32.0" layoutY="23.0" mnemonicParsing="false" onMouseClicked="#setEnglish" pickOnBounds="false" selected="false" text="angielski">
+                  <toggleGroup>
+                    <ToggleGroup fx:id="setlenguage" />
+                  </toggleGroup>
+                </RadioButton>
+                <RadioButton layoutX="32.0" layoutY="60.0" mnemonicParsing="false" onMouseClicked="#setPolish" selected="true" text="polski" toggleGroup="$setlenguage" />
+              </children>
+            </AnchorPane>
+          </content>
+        </TitledPane>
+      </expandedPane>
+      <panes>
+        <TitledPane fx:id="x1" animated="false" text="Liczba graczy">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <RadioButton ellipsisString="" layoutX="17.0" layoutY="24.0" mnemonicParsing="false" onMouseClicked="#setone" text="1">
+                  <toggleGroup>
+                    <ToggleGroup fx:id="setcountPlayer" />
+                  </toggleGroup>
+                </RadioButton>
+                <RadioButton ellipsisString="" layoutX="17.0" layoutY="52.0" mnemonicParsing="false" onMouseClicked="#settwo" selected="true" text="2" toggleGroup="$setcountPlayer" />
+                <RadioButton ellipsisString="" layoutX="17.0" layoutY="80.0" mnemonicParsing="false" onMouseClicked="#setthree" text="3" toggleGroup="$setcountPlayer" />
+                <RadioButton ellipsisString="" layoutX="17.0" layoutY="110.0" mnemonicParsing="false" onMouseClicked="#setfour" text="4" toggleGroup="$setcountPlayer" />
+                <TextField fx:id="player4" layoutX="47.0" layoutY="104.0" prefWidth="115.0" text="gracz4" />
+                <TextField fx:id="player1" layoutX="47.0" layoutY="18.0" prefWidth="115.0" text="gracz1" />
+                <TextField fx:id="player2" layoutX="47.0" layoutY="46.0" prefWidth="115.0" text="gracz2" />
+                <TextField id="player2" fx:id="player3" layoutX="47.0" layoutY="74.0" prefWidth="115.0" text="gracz3" />
+              </children>
+            </AnchorPane>
+          </content>
+        </TitledPane>
+        <fx:reference source="x2" />
+      </panes>
+    </Accordion>
+    <Button fx:id="button" layoutX="0.0" layoutY="266.0" mnemonicParsing="false" onMouseClicked="#startGame" prefHeight="33.0" prefWidth="313.0" text="Zagraj" />
+  </children>
+</AnchorPane>

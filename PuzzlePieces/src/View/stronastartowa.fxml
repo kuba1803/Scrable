@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?scenebuilder-background-color 0x003d99ff?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <children>
+    <ProgressBar layoutX="151.0" layoutY="283.0" prefHeight="28.0" prefWidth="308.0" progress="0.24" />
+    <Label layoutX="195.0" layoutY="172.0" prefHeight="81.0" prefWidth="211.0" text="Scrabble" textFill="WHITE">
+      <font>
+        <Font size="45.0" />
+      </font>
+    </Label>
+  </children>
+</AnchorPane>

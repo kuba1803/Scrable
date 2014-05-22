@@ -8,6 +8,7 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -106,34 +107,34 @@ public class View extends Application {
             System.out.print(reg.getBonus(i, j));
                     if(reg.getBonus(i, j)==2)
                     {
-                         bonus =CreateBackground(i*25, j*25, 25, 25, Color.CORNFLOWERBLUE);
+                         bonus =CreateBackground(i*25, j*25, 25, 25, Color.LIGHTBLUE);
                          text = new Text(i*25+4,j*25+10,"lier");
                          wyn = new Text(i*25+6,j*25+20,"x2");
                         getChildren().addAll(bonus, text, wyn);
                     }
                     else if(reg.getBonus(i, j)==3)
                     {
-                       bonus =CreateBackground(i*25, j*25, 25, 25, Color.CORNFLOWERBLUE);
+                       bonus =CreateBackground(i*25, j*25, 25, 25, Color.BLUE);
                          text = new Text(i*25+4,j*25+10,"lier");
                          wyn = new Text(i*25+6,j*25+20,"x3");
                         getChildren().addAll(bonus, text, wyn);  
                     }
                     else if( reg.getBonus(i, j)==4)
                     {
-                        bonus =CreateBackground(i*25, j*25, 25, 25, Color.CORNFLOWERBLUE);
+                        bonus =CreateBackground(i*25, j*25, 25, 25, Color.LIGHTSALMON);
                          text = new Text(i*25+4,j*25+10,"slo");
                          wyn = new Text(i*25+6,j*25+20,"x2");
                         getChildren().addAll(bonus, text, wyn);
                     }
                     else if(reg.getBonus(i, j)==5)
-                    {bonus =CreateBackground(i*25, j*25, 25, 25, Color.CORNFLOWERBLUE);
+                    {bonus =CreateBackground(i*25, j*25, 25, 25, Color.SALMON);
                          text = new Text(i*25+4,j*25+10,"slo");
                          wyn = new Text(i*25+6,j*25+20,"x3");
                         getChildren().addAll(bonus, text, wyn);
                     }
         }
         bonus()
-        {bonus =CreateBackground(7*25, 7*25, 25, 25, Color.CORNFLOWERBLUE);
+        {bonus =CreateBackground(7*25, 7*25, 25, 25, Color.LIGHTSALMON);
                          text = new Text(7*25,7*25+15,"START");
                          text.setFont(Font.font(9));
                          wyn = new Text(7*25+6,7*25+20,"");
@@ -202,6 +203,7 @@ public class View extends Application {
                     e.toBack();
                 }
                 for (Piece e : plansza) {
+                    System.out.println(e.tail.Char);
                     reg.setmap(e.tail, e.x, e.y, turn, (int) e.correctX / 25);
                     e.setInactive();
                     e.toFront();
@@ -209,6 +211,7 @@ public class View extends Application {
                 for (Piece e : change) {
                     // e.setInactive();
                     e.toBack();
+                    isToChange[e.x-8]=false;
                     reg.change(e.tail);
                 }
 
@@ -224,13 +227,33 @@ public class View extends Application {
                 } else {
                     for (Piece e : plansza) {
                         reg.unsetmap(e.tail, e.x, e.y);
+                        matrix[e.x][e.y]=false;
+                        
                         e.setInactive();
                         e.toBack();
                     }
+                    change.clear();
                     plansza.clear();
                 }
-
+                player.get(turn).Hand.clear();
+                plansza.clear();
                 turn = (turn + 1) % reg.getPlayerCount();
+                Stage stage =new Stage();
+                VBox temp=new VBox(20);
+                final Button button =new Button("Potwierdzam");
+                button.setAlignment(Pos.CENTER);
+                button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+            Stage stage = (Stage) button.getScene().getWindow();
+            stage.close();
+            }
+                });
+                Text text=new Text("Czy gracz  "+reg.getPlayer(turn).id+" się zjawił ?");
+                temp.getChildren().addAll(text,button);
+                Scene scen= new Scene(temp);
+                stage.setScene(scen);
+                stage.showAndWait();
                 System.out.println(turn + " " + reg.getPlayerCount());
                 reg.rend(turn);
                 for (int i = 0; i < 7; i++) {

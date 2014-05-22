@@ -6,6 +6,8 @@
 
 package Model;
 
+import dictionary.Dictionary;
+
 /**
  *
  * @author kuba1_000
@@ -38,7 +40,7 @@ public class Model {
     ,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
     ,3,3,3,3,3,3,3,3,3,3,3,3,5,5,5,5,5,6,7,9}; 
     public static int size=swartosc.length;
-    public Model(int players, String [] id)
+    public Model(int players, String [] id,Dictionary dir)
     {
         tab=new Board(15,15);
          count=players;
@@ -47,7 +49,7 @@ public class Model {
         {
             player[i]=new Player(id[i],tab);
         }
-        bag=new Bag(set,swartosc);
+        bag=new Bag(dir.set,dir.value);
        /* for(int i=0;i<8;i++)
         {
             player.hand.push(bag.rend());

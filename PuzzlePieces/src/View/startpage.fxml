@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?scenebuilder-background-color 0x006299ff?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="299.0" prefWidth="313.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <children>
+    <Accordion layoutX="0.0" layoutY="0.0" prefHeight="268.0" prefWidth="313.0">
+      <expandedPane>
+        <TitledPane fx:id="x1" animated="false" text="Liczba graczy">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <RadioButton layoutX="17.0" layoutY="24.0" mnemonicParsing="false" onMouseClicked="#setone" text="1" />
+                <RadioButton layoutX="17.0" layoutY="52.0" mnemonicParsing="false" onMouseClicked="#settwo" text="2" />
+                <RadioButton layoutX="17.0" layoutY="80.0" mnemonicParsing="false" onMouseClicked="#setthree" text="3" />
+                <RadioButton layoutX="17.0" layoutY="110.0" mnemonicParsing="false" onMouseClicked="#setfour" text="4" />
+                <TextField layoutX="47.0" layoutY="104.0" onAction="#setplayer" prefWidth="115.0" text="gracz4" />
+                <TextField layoutX="47.0" layoutY="18.0" onAction="#serplayer1" prefWidth="115.0" text="gracz1" />
+                <TextField layoutX="47.0" layoutY="46.0" onAction="#setplayer2" prefWidth="115.0" text="gracz2" />
+                <TextField layoutX="47.0" layoutY="74.0" onAction="#setplayer3" prefWidth="115.0" text="gracz3" />
+              </children>
+            </AnchorPane>
+          </content>
+        </TitledPane>
+      </expandedPane>
+      <panes>
+        <fx:reference source="x1" />
+        <TitledPane animated="false" text="Słownik">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <RadioButton cache="false" layoutX="32.0" layoutY="23.0" mnemonicParsing="false" onMouseClicked="#setEnglish" pickOnBounds="false" selected="true" text="angielski" />
+                <RadioButton layoutX="32.0" layoutY="60.0" mnemonicParsing="false" onMouseClicked="#setPolish" text="polski" />
+              </children>
+            </AnchorPane>
+          </content>
+        </TitledPane>
+      </panes>
+    </Accordion>
+    <Button layoutX="0.0" layoutY="266.0" mnemonicParsing="false" onMouseClicked="#startGame" prefHeight="33.0" prefWidth="313.0" text="Button" />
+  </children>
+</AnchorPane>
