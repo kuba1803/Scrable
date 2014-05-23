@@ -193,12 +193,12 @@ public class View extends Application {
         us[1] = new user(1);
         us[2] = new user(2);
         us[3] = new user(3);
-        Button confirm = new Button("Zatwierdz");
-        confirm.setPrefSize(80, 30);
+        final Button confirm = new Button("Zatwierdz");
+        confirm.setPrefSize(100, 40);
         confirm.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-
+                confirm.setDisable(true);
                 for (Piece e : player.get(turn).Hand) {
                     e.toBack();
                 }
@@ -211,10 +211,9 @@ public class View extends Application {
                 for (Piece e : change) {
                     // e.setInactive();
                     e.toBack();
-                    isToChange[e.x-8]=false;
                     reg.change(e.tail);
                 }
-
+                for(int i=0;i<7;i++)isToChange[i]=false;
                 if (reg.checkWords(plansza)) {
 
                     reg.policz(plansza, turn);
@@ -276,12 +275,36 @@ public class View extends Application {
                         }
                     }
                 }
+                confirm.setDisable(false);
 
             }
         });
+        final Button end = new Button("Zakończ gre");
+        end.setPrefSize(100, 40);
+        end.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                
+                Stage finish = new Stage();
+                HBox hbox= new HBox(5);
+                for(int i=0;i<reg.getPlayerCount();i++)
+                {
+                    VBox vbox= new VBox(5);
+                    Text id =new  Text(reg.getPlayer(i).id);
+                    Text value = new Text(""+reg.getPlayer(i).score);
+                    vbox.getChildren().addAll(id,value);
+                    hbox.getChildren().addAll(vbox);
+                   
+                }
+                 Scene scane= new Scene(hbox);
+                 finish.setScene(scane);
+                 finish.show();
+                 Stage stage = (Stage) end.getScene().getWindow();
+            stage.close();
+            }});
         user1.getChildren().addAll(us[0], us[1]);
         user2.getChildren().addAll(us[2], us[3]);
-        rightvb.getChildren().addAll(user1, user2, confirm);
+        rightvb.getChildren().addAll(user1, user2, confirm,end);
         hb.getChildren().addAll(vb, rightvb);
         main.getChildren().addAll(hb);
         //  main.getChildren().addAll(bonus);
@@ -439,7 +462,7 @@ public class View extends Application {
                     that.toFront();
                     int x = ((int) me.getSceneX()) / 25;
                     int y = (int) (me.getSceneY() / 25);
-                    if (change.contains(this)) {
+                    if (change.contains(that)) {
                         isToChange[x - 8] = false;
                         that.mod = 0;
                         change.remove(that);

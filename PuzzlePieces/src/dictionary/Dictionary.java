@@ -10,6 +10,7 @@ import Controller.Pair;
 import Model.Board;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +25,7 @@ public class Dictionary {
     public int[] value;
 
     public Dictionary(String location, char[] letter, int[] value) throws IOException {
-        Scanner scr = new Scanner(new File(location));
+        Scanner scr = new Scanner(Paths.get(location));
         set = letter;
         this.value = value;
         int i = 0;

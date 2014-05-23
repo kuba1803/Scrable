@@ -25,7 +25,7 @@ public class Table
              for(int j=0;j<y;j++)table[i][j]=new Field();
          }
      }
-     public void set(Shallow a, int x, int y)
+     public void set(Tail a, int x, int y)
      {
          table[x][y].set(a);
      }
