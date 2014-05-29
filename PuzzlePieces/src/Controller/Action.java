@@ -114,8 +114,9 @@ public class Action implements Registered {
     }
 
     @Override
-    public void change(Tail tail) {
+    public void change(Tail tail,int player,int x) {
         contr.model.bag.setBack(tail);
+        contr.model.player[player].hand.hand[x].isFull=false;
     }
 
     @Override

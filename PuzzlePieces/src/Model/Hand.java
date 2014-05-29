@@ -39,4 +39,10 @@ public class Hand {
         //isFiald--;
         return hand[i].current;
     }
+    public void remove(Tail a)
+    {
+        int i;
+        for( i=0;hand[i].current.id==a.id;i++)
+            hand[i].isFull=false;
+    }
 }

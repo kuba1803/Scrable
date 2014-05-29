@@ -29,6 +29,6 @@ public interface Registered {
     public int getTailSize();
     public Tail getHand(int i, int player);
     public void rend(int i);
-    public void change(Tail tail);
+    public void change(Tail tail,int player,int x);
     public int getBonus(int x,int y);
 }

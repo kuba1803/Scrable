@@ -8,35 +8,29 @@ package dictionary;
 import Controller.Coordinates;
 import Controller.Pair;
 import Model.Board;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 public class Dictionary {
 
-    Map<String, Integer> map = new HashMap<String, Integer>();
+    HashSet<String> map = new HashSet<String>();
     int size;
     public char[] set;
     public int[] value;
 
     public Dictionary(String location, char[] letter, int[] value) throws IOException {
-        Scanner scr = new Scanner(Paths.get(location));
+        Scanner scr = new Scanner(Paths.get(location),"UTF-8");
         set = letter;
         this.value = value;
         int i = 0;
         while (scr.hasNext()) {
-            map.put(scr.next(), i);
+            map.add(scr.next());
             i++;
         }
-        
-        System.out.print(map.size());
-        System.out.print(map.size());
-        System.out.print(map.size());
         size = i;
     }
 
@@ -82,7 +76,7 @@ public class Dictionary {
         boolean corect = true;
         for (String e : words) {
             System.out.println(e);
-            if (!map.containsKey(e)) {
+            if (!map.contains(e)) {
                 corect = false;
                 break;
             }
@@ -91,7 +85,7 @@ public class Dictionary {
     }
 
     public static Dictionary Polish() throws IOException {
-        final char[] set = {' ', ' ',
+        final char[] set = {
             'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A',
             'E', 'E', 'E', 'E', 'E', 'E', 'E',
             'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I',
@@ -110,7 +104,7 @@ public class Dictionary {
             'T', 'T', 'T',
             'Y', 'Y', 'Y', 'Y',
             'B', 'B', 'G', 'G', 'H', 'H', 'J', 'J', 'Ł', 'Ł', 'U', 'U', 'Ą', 'Ę', 'F', 'Ó', 'Ś', 'Ż', 'Ć', 'Ń', 'Ź'};
-        final int[] swartosc = {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 5, 5, 5, 5, 6, 7, 9};
+        final int[] swartosc = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 5, 5, 5, 5, 6, 7, 9};
         int size = swartosc.length;
         return new Dictionary("src/dictionary/slowa-win.txt", set, swartosc);
     }

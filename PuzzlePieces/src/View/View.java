@@ -63,6 +63,7 @@ public class View extends Application {
         int score;
         Text text;
         public Text wyn;
+        public boolean is;
 
         public user(int i) {
             score = 0;
@@ -70,11 +71,14 @@ public class View extends Application {
             if (i < reg.getPlayerCount()) {
                 text = new Text(50, 40, reg.getPlayer(i).id);
                 wyn = new Text(50, 60, "" + score);
+                is=true;
+                getChildren().addAll(tmp, text, wyn);
             } else {
                 text = new Text(50, 40, "Puste");
                 wyn = new Text(50, 60, "0");
+                is=false;
             }
-            getChildren().addAll(tmp, text, wyn);
+            
         }
     }
 
@@ -143,6 +147,7 @@ public class View extends Application {
     }
 
     private void init(final Stage primaryStage) {
+        primaryStage.setResizable(false);
         Pane main = new Pane();
         main.getChildren().addAll(CreateBackground(0, 0, 800, 600, Color.LIGHTBLUE/*(41, 57, 73)*/));
         main.setPrefSize(800, 600);
@@ -170,16 +175,6 @@ public class View extends Application {
         }
         main.getChildren().addAll(pieces);
 
-        /*   for (int col = 0; col < 7; col++) {
-         for (int row = 0; row < 1; row++) {
-         int x = col * Piece.SIZE;
-         int y = 0;
-         final Piece piece = new Piece(reg.gethand(col),x, y,
-         desk.getWidth(), desk.getHeight(),1);
-         pieces.add(piece);
-         onHand.add(piece);
-         }
-         }*/
         // create vbox for desk and buttons*/
         VBox vb = new VBox(10);
         HBox addictField = new HBox(25);
@@ -211,7 +206,7 @@ public class View extends Application {
                 for (Piece e : change) {
                     // e.setInactive();
                     e.toBack();
-                    reg.change(e.tail);
+                    reg.change(e.tail,turn,((int)e.correctX)/25);
                 }
                 for(int i=0;i<7;i++)isToChange[i]=false;
                 if (reg.checkWords(plansza)) {
@@ -302,11 +297,13 @@ public class View extends Application {
                  Stage stage = (Stage) end.getScene().getWindow();
             stage.close();
             }});
+      
         user1.getChildren().addAll(us[0], us[1]);
         user2.getChildren().addAll(us[2], us[3]);
         rightvb.getChildren().addAll(user1, user2, confirm,end);
         hb.getChildren().addAll(vb, rightvb);
         main.getChildren().addAll(hb);
+        
         //  main.getChildren().addAll(bonus);
         root.getChildren().addAll(main);
         reg.rend(turn);
@@ -316,7 +313,6 @@ public class View extends Application {
             Piece tmp = null;
             for (Piece e : pieces) {
                 if (e.equals(tail)) {
-                    //             tmp=e;
                     player.get(turn).Hand.add(e);
                     e.setTranslateX(i * 25);
                     e.correctX = i * 25;
@@ -332,9 +328,6 @@ public class View extends Application {
 
     }
 
-    /**
-     * Node that represents the playing area/ desktop where the puzzle pices sit
-     */
     public class Desk extends Pane {
 
         Desk(int numOfColumns, int numOfRows, Paint value, int mode) {
