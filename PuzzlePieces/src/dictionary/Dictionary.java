@@ -33,6 +33,7 @@ public class Dictionary {
         }
         size = i;
     }
+    
 
     public boolean cheack(List<Pair> list, Board board) throws Exception {
         /*if (!board.get(7, 7).isFull) {
@@ -134,5 +135,6 @@ public class Dictionary {
         }
         return new Dictionary("src/dictionary/English.txt", set, value);
     }
+    
 }
 
